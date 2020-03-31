@@ -1,9 +1,29 @@
 @import './colors.scss';
 
-body {
+html {
+
+}
+html,
+body,
+#root {
   color: $font-color;
+  height: 100%;
 }
 
 .link {
   cursor: pointer;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+.app-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.body-container {
+  flex: 1;
 }

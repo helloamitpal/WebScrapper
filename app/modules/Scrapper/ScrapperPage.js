@@ -1,27 +1,34 @@
-import React, { useEffect, Fragment } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
+// import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 import * as scrapperActionCreator from './scrapperActionCreator';
 import LoadingIndicator from '../../components/atoms/LoadingIndicator';
 import Message from '../../components/atoms/Message';
 import Input from '../../components/atoms/Input';
-import config from '../../config';
+// import config from '../../config';
 import translate from '../../locale';
 
+import './Scrapper.scss';
+
 const ScrapperPage = ({
-  articleState: { articles, error, loading },
-  articleActions,
-  history,
-  match,
-  location: { pathname }
+  scrapperState: { links, errors, loading },
+  scrapperActions
 }) => {
-  const head = () => (
-    <Helmet key={`scrapper-page-${Math.random()}`}>
-      <title>{translate('article.articleList')}</title>
+  const URL_REGEX = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&=]*)/;
+
+  const onChangeSearch = (url) => {
+    scrapperActions.fetchLinks(url);
+  };
+
+  const validateInput = (val) => (val && val.match(URL_REGEX));
+
+  const head = (
+    <Helmet key="scrapper-page">
+      <title>{translate('common.appName')}</title>
       <meta property="og:title" content="Scrapper link list" />
       <meta
         name="description"
@@ -31,51 +38,27 @@ const ScrapperPage = ({
     </Helmet>
   );
 
-  // const gotoArticleDetails = article => {
-  //   history.push({
-  //     pathname: config.ARTICLE_DETAILS_PAGE,
-  //     state: { ...article }
-  //   });
-  // };
-  //
-  // const renderArticles = () => {
-  //   return articles.map((article) => (
-  //     <div className="col s12 m6 l6 xl4 card-container" key={article.title}>
-  //       <div className="card large">
-  //         <div className="card-image">
-  //           <LazyLoadImage alt={article.title} src={article.urlToImage} />
-  //         </div>
-  //         <div className="card-content">
-  //           <span className="card-title">{article.title}</span>
-  //         </div>
-  //         <div className="card-action">
-  //           <span className="link" onClick={() => gotoArticleDetails(article)}>{translate('common.readMore')}</span>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   ));
-  // };
-
-  // useEffect(() => {
-  //   const id = (match.params && match.params.id) || '';
-  //   window.scrollTo(0, 0);
-  //   articleActions.fetchArticles(id);
-  // }, [match.params]);
-
-  const onChangeSearch = (searchText) => {
-    console.log(searchText);
-  };
-
   return (
-    <div className="article-page-container">
-      {head()}
+    <div className="scrapper-page-container mt-20">
+      {head}
       {loading && <LoadingIndicator />}
-      {!loading && error && <Message type="error" title={translate('common.oops')} description={error} />}
-      {!loading && !error ? (
-        <div className="row">
-          <Input onChange={onChangeSearch} />
+      {!loading && errors && (
+        <Message
+          type="error"
+          title={translate('common.oops')}
+          description={errors}
+        />
+      )}
+      <div className="row">
+        <Input
+          onChange={onChangeSearch}
+          validate={validateInput}
+          placeholder={translate('common.URL')}
+        />
+        <div className="links-list-container">
+          {links && links.map(({ href }) => (<div key={href}>{href}</div>))}
         </div>
-      ) : null}
+      </div>
     </div>
   );
 };
@@ -89,19 +72,13 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 ScrapperPage.propTypes = {
-  articleState: PropTypes.object,
-  articleActions: PropTypes.object,
-  history: PropTypes.object,
-  match: PropTypes.object,
-  location: PropTypes.object
+  scrapperState: PropTypes.object,
+  scrapperActions: PropTypes.object
 };
 
 ScrapperPage.defaultProps = {
-  articleState: {},
-  articleActions: {},
-  history: {},
-  match: {},
-  location: {}
+  scrapperState: {},
+  scrapperActions: {}
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ScrapperPage);

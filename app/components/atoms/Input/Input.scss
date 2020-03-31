@@ -1,0 +1,7 @@
+@import './colors.scss';
+
+.input-container {
+  &.error input {
+    background-color: $input-error-background;
+  }
+}

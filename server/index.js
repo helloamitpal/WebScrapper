@@ -5,21 +5,14 @@ const bodyParser = require('body-parser');
 const compression = require('compression');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const proxy = require('http-proxy-middleware');
 
 const logger = require('./util//logger');
 const argv = require('./util/argv');
 const port = require('./util/port');
 const setupMiddleware = require('./middlewares/frontendMiddleware');
+const setupRouter = require('./router');
 
 const app = express();
-
-// setting up proxy
-const apiProxy = proxy('/top-headlines', {
-  target: 'https://newsapi.org/v2',
-  changeOrigin: true
-});
-app.use(apiProxy);
 
 // making .env file to process.env
 dotenv.config();
@@ -49,6 +42,8 @@ app.use((req, res, next) => {
 const customHost = argv.host || process.env.HOST;
 const host = customHost || null; // Let http.Server use its default IPv6/4 host
 const prettyHost = customHost || 'localhost';
+
+setupRouter(app);
 
 // In production we need to pass these values in instead of relying on webpack
 setupMiddleware(app, {

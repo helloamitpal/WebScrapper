@@ -1,10 +1,9 @@
 import * as actionTypes from './scrapperActionTypes';
 
-export const fetchAllLinks = source => (dispatch, getState, { api }) => {
-  const param = source ? `sources=${source}` : 'country=us';
+export const fetchLinks = (url) => (dispatch, getState, { api }) => {
   dispatch({
     type: actionTypes.FETCH_LINKS,
-    promise: api.get(`/top-headlines?${param}`),
+    promise: api.get(`/api/scrappers?url=${url}`),
     payload: {}
   });
 };

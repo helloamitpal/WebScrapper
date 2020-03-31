@@ -39,7 +39,7 @@ const fireRequest = async (method, fullUrl, data) => {
 
   // serving api success or error response
   try {
-    const res = axiosInstance(`${fullUrl}&apiKey=${config.API_KEY}`, options);
+    const res = axiosInstance(fullUrl, options);
     const fullResponse = await res;
     return fullResponse.data;
   } catch (error) {
