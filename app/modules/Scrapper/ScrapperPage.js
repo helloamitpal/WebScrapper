@@ -8,6 +8,7 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import * as scrapperActionCreator from './scrapperActionCreator';
 import LoadingIndicator from '../../components/atoms/LoadingIndicator';
 import Message from '../../components/atoms/Message';
+import Input from '../../components/atoms/Input';
 import config from '../../config';
 import translate from '../../locale';
 
@@ -61,12 +62,20 @@ const ScrapperPage = ({
   //   articleActions.fetchArticles(id);
   // }, [match.params]);
 
+  const onChangeSearch = (searchText) => {
+    console.log(searchText);
+  };
+
   return (
     <div className="article-page-container">
       {head()}
       {loading && <LoadingIndicator />}
       {!loading && error && <Message type="error" title={translate('common.oops')} description={error} />}
-      <div className="row" />
+      {!loading && !error ? (
+        <div className="row">
+          <Input onChange={onChangeSearch} />
+        </div>
+      ) : null}
     </div>
   );
 };
