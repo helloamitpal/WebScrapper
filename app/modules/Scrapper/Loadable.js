@@ -3,6 +3,6 @@ import Loadable from 'react-loadable';
 import LoadingIndicator from '../../components/atoms/LoadingIndicator';
 
 export default Loadable({
-  loader: () => import('./ArticlePage'),
+  loader: () => import('./ScrapperPage'),
   loading: LoadingIndicator
 });

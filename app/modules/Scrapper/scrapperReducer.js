@@ -1,6 +1,6 @@
 import { handle } from 'redux-pack';
 
-import * as actionTypes from './articleActionTypes';
+import * as actionTypes from './scrapperActionTypes';
 import translate from '../../locale';
 
 const initialState = {

@@ -11,6 +11,8 @@ const Header = ({ onChangeLocale }) => {
   const [menuOpen, setMenuToggle] = useState(false);
 
   const toggleMenu = () => setMenuToggle(!menuOpen);
+  const menuOpenOverlayStyle = { display: 'block', opacity: 1 };
+  const menuOpenStyle = { transform: 'translateX(0px)' };
 
   return (
     <div className="header-container navbar-fixed">
@@ -26,13 +28,13 @@ const Header = ({ onChangeLocale }) => {
             </span>
             <div
               className="sidenav-overlay"
-              style={menuOpen ? { display: 'block', opacity: 1 } : null}
+              style={menuOpen ? menuOpenOverlayStyle : null}
               onClick={toggleMenu}
             />
             <ul
               id="slide-out"
               className="sidenav"
-              style={menuOpen ? { transform: 'translateX(0px)' } : null}
+              style={menuOpen ? menuOpenStyle : null}
             >
               <li>
                 <a className="subheader">{translate('common.menu')}</a>
@@ -50,31 +52,11 @@ const Header = ({ onChangeLocale }) => {
                   {translate('article.techRadar')}
                 </Link>
               </li>
-              <li>
-                <Link to="/articles/mashable" className="item" onClick={toggleMenu}>
-                  {translate('article.mashable')}
-                </Link>
-              </li>
-              <li>
-                <Link to="/articles/the-verge" className="item" onClick={toggleMenu}>
-                  {translate('article.verge')}
-                </Link>
-              </li>
             </ul>
-            <ul id="nav-mobile" className="right hide-on-med-and-down">
+            <ul id="nav-desktop" className="right hide-on-med-and-down">
               <li>
                 <Link to="/articles/techradar" className="item">
                   {translate('article.techRadar')}
-                </Link>
-              </li>
-              <li>
-                <Link to="/articles/mashable" className="item">
-                  {translate('article.techRadar')}
-                </Link>
-              </li>
-              <li>
-                <Link to="/articles/the-verge" className="item">
-                  {translate('article.verge')}
                 </Link>
               </li>
             </ul>

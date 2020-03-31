@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 
-import articleReducer from '../modules/Article/articleReducer';
+import scrapperReducer from '../modules/Scrapper/scrapperReducer';
 
 // this is the root reducer to combine module wise reducers
 const rootReducer = combineReducers({
-  article: articleReducer
+  scrapper: scrapperReducer
 });
 
 export default rootReducer;

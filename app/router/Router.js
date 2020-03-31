@@ -4,8 +4,7 @@ import { Switch, Route, withRouter } from 'react-router-dom';
 
 import config from '../config';
 import NotFoundModule from '../modules/NotFound/Loadable';
-import ArticleModule from '../modules/Article/Loadable';
-import ArticleDetailsModule from '../modules/Article/Details/Loadable';
+import ScrapperModule from '../modules/Scrapper/Loadable';
 import Header from '../components/molecules/Header';
 import Footer from '../components/molecules/Footer';
 import LocaleContext from '../locale/localeContext';
@@ -31,8 +30,11 @@ const Router = () => {
         <Header onChangeLocale={onChangeLocale} />
         <div className="body-container container">
           <Switch>
-            <Route exact path={[config.ARTICLE_PAGE, config.SPEICIFIC_ARTICLE_PAGE]} render={(props) => <ArticleModule {...props} />} />
-            <Route exact path={config.ARTICLE_DETAILS_PAGE} render={(props) => <ArticleDetailsModule {...props} />} />
+            <Route
+              exact
+              path={config.SCRAPPER_PAGE}
+              render={(props) => <ScrapperModule {...props} />}
+            />
             <Route path="" render={(props) => <NotFoundModule {...props} />} />
           </Switch>
         </div>
