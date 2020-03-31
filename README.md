@@ -1,34 +1,10 @@
-# React-CSR-Template
+# WebScrapper
 
-This is a React based client side rendering boilerplate.
+An application to list all available hyperlinks in a web page from a given URL.
 
-In client side rendering (CSR), you are completely running ReactJS on the browser. The initial HTML rendered by the server is a placeholder and the entire UI is rendered in the browser once all your scripts load.
+The repo structure has been created out of Amit's public React template. Links are given below.
 
-[Github page](https://amit040386.github.io/react-csr-template/)
-
-It's common components are bucketed into groups of Atoms and Molecules, based loosely on Brad Frost’s [Atomic Web Design principles](https://bradfrost.com/blog/post/atomic-web-design/).
-
-Atoms are the basic building blocks of our web interfaces, while Molecules are singular pieces of functionality comprised of Atoms, and Organisms are relatively complex, distinct sections of web interfaces make up of groups of Atoms and Molecules.
-
-## Advantages of CSR
-
-- **No Full Page Reload Required**: Client-side rendering avoids making unnecessary requests for a full page when only a portion of the page has changed. This is especially helpful in a world that’s increasingly browsing via mobile networks with high latency. It makes sure fast website rendering after the initial load.
-
-- **Lazy Loading**: Client-side rendering supports lazy loading sections of your application to save bandwidth & speed initial load. For example, you can load additional records, images, and ads as the user scrolls down, or as the user changes their search parameters, all without performing a full post-back.
-
-- **Rich Interactions**: Client-side rendering supports rich, animated interactions, transformations, and transitions. Fade a row out on delete, or fade a dialog into view.
-
-- **Easy Deployments**: Static files are easy to deploy. You don’t necessarily need to perform a monolithic build to generate new binaries when a small change occurs.
-
-## When you should not consider CSR
-
-- If high SEO (Search engine optimisation) is essential to increase the visibility of the web application to the users of a search engine.
-
-- If you need faster initial loading. Then CSR is not recommended. Server side rendering could be a wise approach.
-
-## Demo
-
-[To see the demo of this template, click here](https://react-csr-template.herokuapp.com)
+[Amit's React-csr-template Github page](https://amit040386.github.io/react-csr-template/)
 
 ## Primary Tech stack
 
@@ -85,16 +61,6 @@ $ cd [YOUR APP NAME]
 $ npm install
 ```
 
-Navigate to [News API](https://newsapi.org/) and grab your API key.
-
-Find config/default.js in root folder and update API Key.
-
-```javascript
-{
-  API_KEY: 'enter-your-api-key'
-}
-```
-
 To run on local
 
 ```sh
@@ -119,52 +85,6 @@ Use the following commands to execute the test cases
 ```sh
 $ npm run test
 ```
-
-## Deployment
-
-Deployment build
-
-```sh
-$ npm run build
-```
-
-You can deploy this project to:
-
-[Heroku](https://www.heroku.com/)
-
-Steps to follow:
-
-```sh
-$ heroku create $APP_NAME --buildpack mars/create-react-app
-$ git add .
-$ git commit -m "Start deploying create-react-app in heroku"
-$ git push heroku master
-$ heroku open
-```
-
-You can do all these from Heroku dashboard as well.
-
-## Setting up proxy in Heroku deployment, if required
-
-Setting up proxy is required when an API call is made to a different domain. For example, your app is deployed in Heroku domain and you are trying to call the API from https://myexample.abc.com domain. Then the CORS issue would surface to block the response. To counter that CORS issue, proxy setup is required.
-
-These are the steps to be followed while setting up the proxy for the Heroku deployment.
-
-1. Go to Heroku dashboard. Click on settings tab and add this buildpack https://github.com/heroku/heroku-buildpack-static.git
-
-2. There is a file named, static.json file in the root folder. Change the route and origin url as per your requirement.
-
-3. In package.json file, "proxy" property has already been added. This is required for the local development. Please change the proxy url accordingly.
-
-4. Comment out the baseURL property of axios instance in /src/api/apiinterceptor.js file. Though it has already been commented out in this template. This is necessary to make it work.
-
-## What if I don't need this proxy setup
-
-If you don't need proxy setup then make a couple of changes in the template as mentioned below.
-
-- Delete static.json file from the root folder
-- Remove "proxy" code snippet from server/index.js file.
-- Uncomment the baseURL property while creating the axios instance in /src/api/apiinterceptor.js file.
 
 ## License
 

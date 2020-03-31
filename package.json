@@ -1,15 +1,15 @@
 {
-  "name": "react-csr-template",
+  "name": "WebScrapper",
   "version": "1.0.0",
   "private": true,
   "engines": {
     "node": ">=8.10.0",
     "npm": ">=5"
   },
-  "description": "This is a react CSR boilerplate code.",
+  "description": "WebScrapper is an application to list all available hyperlinks available in a webpage",
   "repository": {
     "type": "git",
-    "url": "https://github.com/amit040386/react-csr-template"
+    "url": "https://github.com/amit040386/WebScrapper"
   },
   "keywords": [
     "javascript",
