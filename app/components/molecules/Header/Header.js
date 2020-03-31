@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import LocaleSelector from '../../atoms/LocaleSelector';
 import translate from '../../../locale';
+import config from '../../../config';
 
 import './header.scss';
 
@@ -19,7 +20,7 @@ const Header = ({ onChangeLocale }) => {
       <nav className="red">
         <div className="container">
           <div className="nav-wrapper">
-            <a href="/" className="brand-logo">
+            <a href={config.SCRAPPER_PAGE} className="brand-logo">
               {translate('common.appName')}
             </a>
             <LocaleSelector className="right" onChangeLocale={onChangeLocale} />
@@ -43,20 +44,8 @@ const Header = ({ onChangeLocale }) => {
                 <div className="divider" />
               </li>
               <li>
-                <Link to="/" className="item" onClick={toggleMenu}>
+                <Link to={config.SCRAPPER_PAGE} className="item" onClick={toggleMenu}>
                   {translate('common.home')}
-                </Link>
-              </li>
-              <li>
-                <Link to="/articles/techradar" className="item" onClick={toggleMenu}>
-                  {translate('article.techRadar')}
-                </Link>
-              </li>
-            </ul>
-            <ul id="nav-desktop" className="right hide-on-med-and-down">
-              <li>
-                <Link to="/articles/techradar" className="item">
-                  {translate('article.techRadar')}
                 </Link>
               </li>
             </ul>

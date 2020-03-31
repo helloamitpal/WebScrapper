@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 import LocaleContext from '../../../locale/localeContext';
+import langConfig from './config';
 
 import './localeSelector.scss';
 
@@ -33,13 +34,7 @@ LocaleSelector.propTypes = {
 
 LocaleSelector.defaultProps = {
   className: '',
-  langs: [{
-    label: 'EN',
-    value: 'en'
-  }, {
-    label: 'DE',
-    value: 'de'
-  }]
+  langs: langConfig
 };
 
 export default LocaleSelector;
