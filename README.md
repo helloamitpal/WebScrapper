@@ -6,6 +6,8 @@ The repo structure has been created out of Amit's public React template. Links a
 
 [Amit's React-csr-template Github page](https://amit040386.github.io/react-csr-template/)
 
+Icon set: [Material icon](https://material.io/resources/icons/?icon=search&style=baseline)
+
 ## Primary Tech stack
 
 - **React**: The primary UI library

@@ -30,13 +30,10 @@ const articleReducer = (state = initialState, action = '') => {
           loading: true
         }),
         success: prevState => {
-          if (payload) {
-            return {
-              ...prevState,
-              links: [...payload]
-            };
-          }
-          return failureMessage(prevState);
+          return {
+            ...prevState,
+            links: payload ? [...payload] : []
+          };
         },
         failure: prevState => failureMessage(prevState, payload),
         finish: prevState => ({

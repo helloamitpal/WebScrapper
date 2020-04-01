@@ -7,12 +7,11 @@ const Input = ({ onChange, validate, placeholder }) => {
   const [error, setError] = useState(false);
 
   const onChangeText = ({ target: { value } }) => {
-    const valid = validate && validate.call(null, value);
+    const trimmedVal = value.trim();
+    const valid = validate && validate.call(null, trimmedVal);
 
     setError(!valid);
-    if (valid) {
-      onChange(value);
-    }
+    onChange(trimmedVal);
   };
 
   return (

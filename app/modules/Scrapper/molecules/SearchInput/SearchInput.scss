@@ -1,0 +1,28 @@
+@import './colors.scss';
+
+.search-input-container {
+  display: flex;
+
+  .input-container {
+    flex: 1;
+  }
+
+  button {
+    border: 0 none;
+    background: $btn-background;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    cursor: pointer;
+    justify-content: center;
+
+    &:hover {
+      background: $btn-hover-background;
+
+      .material-icons {
+        color: $btn-hover-icon-color;
+      }
+    }
+  }
+}

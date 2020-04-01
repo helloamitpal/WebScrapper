@@ -76,6 +76,7 @@
     "react-loadable": "^5.5.0",
     "react-redux": "5.0.7",
     "react-router-dom": "^5.1.2",
+    "react-tiny-virtual-list": "^2.2.0",
     "redux": "3.7.2",
     "redux-pack": "^0.1.5",
     "redux-persist": "5.10.0",

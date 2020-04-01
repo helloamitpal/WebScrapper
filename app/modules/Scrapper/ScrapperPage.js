@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import * as scrapperActionCreator from './scrapperActionCreator';
 import LoadingIndicator from '../../components/atoms/LoadingIndicator';
 import Message from '../../components/atoms/Message';
-import Input from '../../components/atoms/Input';
+import SearchInput from './molecules/SearchInput';
 // import config from '../../config';
 import translate from '../../locale';
 
@@ -18,13 +18,9 @@ const ScrapperPage = ({
   scrapperState: { links, errors, loading },
   scrapperActions
 }) => {
-  const URL_REGEX = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&=]*)/;
-
   const onChangeSearch = (url) => {
     scrapperActions.fetchLinks(url);
   };
-
-  const validateInput = (val) => (val && val.match(URL_REGEX));
 
   const head = (
     <Helmet key="scrapper-page">
@@ -42,19 +38,9 @@ const ScrapperPage = ({
     <div className="scrapper-page-container mt-20">
       {head}
       {loading && <LoadingIndicator />}
-      {!loading && errors && (
-        <Message
-          type="error"
-          title={translate('common.oops')}
-          description={errors}
-        />
-      )}
       <div className="row">
-        <Input
-          onChange={onChangeSearch}
-          validate={validateInput}
-          placeholder={translate('common.URL')}
-        />
+        <SearchInput onSearch={onChangeSearch} />
+        {!loading && errors && <Message type="error" description={errors} />}
         <div className="links-list-container">
           {links && links.map(({ href }) => (<div key={href}>{href}</div>))}
         </div>
