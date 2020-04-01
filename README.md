@@ -29,7 +29,7 @@ Icon set: [Material icon](https://material.io/resources/icons/?icon=search&style
 
 ## Features of this template
 
-- Complete UI architecture
+- Complete UI architecture with mono-repo directories structure
 - Centralised HTTP(S) request and response interceptor
 - Progressive web app (PWA)
 - Webpack based module bundler
@@ -95,6 +95,14 @@ Use the following commands to execute the test cases
 ```sh
 $ npm run test
 ```
+
+# Scope of improvements
+
+- NodeJS architecture is not created
+- Test case setup is done but test cases are not written. A few basic test cases have been written for two atomic components (LoadingIndicator and Message). Rigorous test cases yet to be written.
+- Production deployment setup for Redis, is not created
+- Complete theme setup is not done but created the scope
+- Multiple languages are not added
 
 ## License
 
