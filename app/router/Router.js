@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useState } from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 
 import config from '../config';
 import NotFoundModule from '../modules/NotFound/Loadable';
@@ -13,6 +14,14 @@ import { setLocaleCookie } from '../services/cookieService';
 
 const Router = () => {
   const [selectedLocale, setSelectedLocale] = useState(config.FALLBACK_LANGUAGE);
+
+  // configuring toaser message
+  toast.configure({
+    autoClose: 3000,
+    draggable: false,
+    hideProgressBar: true,
+    pauseOnHover: false
+  });
 
   // setting up cookie for default language
   useEffect(() => {
@@ -28,6 +37,7 @@ const Router = () => {
   return (
     <LocaleContext.Provider value={{ lang: selectedLocale }}>
       <div className="app-container">
+        <ToastContainer />
         <Header onChangeLocale={onChangeLocale} />
         <div className="body-container container">
           <Switch>

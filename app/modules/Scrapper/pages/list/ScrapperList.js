@@ -26,7 +26,7 @@ const ScrapperListPage = ({
   // show toast message if any errror occurrs
   useEffect(() => {
     if (errors) {
-      toast(errors);
+      toast.error(errors);
     }
   }, [errors]);
 
@@ -69,7 +69,7 @@ const ScrapperListPage = ({
                   ...savedLinks[index]
                 };
 
-                return <Row {...rowProps} onClick={onRemoveBookmark} />;
+                return <Row key={`row-${index.toString()}`} {...rowProps} onClick={onRemoveBookmark} />;
               }}
             />
           )

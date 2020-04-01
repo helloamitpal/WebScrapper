@@ -16,51 +16,59 @@ module.exports = (app) => {
 
   // api to get all saved links in the store
   app.get('/api/savedLinks', (req, res) => {
-    redisClient.hmget(REDIS_ROOT_NAME, (err, arr) => {
+    redisClient.get(REDIS_ROOT_NAME, (err, arr) => {
       if (err) {
         throw new Error('Something went wrong');
       }
 
       logger.info(`Data is found in Redis store: ${arr ? arr.length : 0}`);
-      res.send(arr || []);
+      res.send(JSON.parse(arr) || []);
     });
   });
 
   // api to save link in the store
   app.post('/api/saveLink', (req, res) => {
-    redisClient.hmget(REDIS_ROOT_NAME, (err, arr) => {
+    redisClient.get(REDIS_ROOT_NAME, (err, redisStr) => {
       if (err) {
         throw new Error('Something went wrong');
       }
 
-      const updatedArr = arr ? [...arr] : [];
-      updatedArr.push(req.body);
-      redisClient.hmset(REDIS_ROOT_NAME, updatedArr, (seterr, obj) => {
+      const redisObj = JSON.parse(redisStr);
+      let arr = {};
+      if (!redisObj) {
+        arr = [{ ...req.body }];
+      } else {
+        arr = [...redisObj, req.body];
+      }
+
+      redisClient.set(REDIS_ROOT_NAME, JSON.stringify(arr), (seterr) => {
         if (seterr) {
           throw new Error('Something went wrong');
         }
 
         logger.info('Data is saved in Redis store');
-        res.send(obj);
+        res.send(arr);
       });
     });
   });
 
   // api to remove link from saved store
   app.delete('/api/removeLink', (req, res) => {
-    redisClient.hmget(REDIS_ROOT_NAME, (err, arr) => {
+    redisClient.get(REDIS_ROOT_NAME, (err, redisStr) => {
       if (err) {
         throw new Error('Something went wrong');
       }
 
-      const updatedArr = arr.filter(({ id }) => (id !== req.query.id));
-      redisClient.hmset(REDIS_ROOT_NAME, updatedArr, (seterr, obj) => {
+      const links = JSON.parse(redisStr);
+      const updatedArr = links.filter(({ id }) => (id !== req.query.id));
+
+      redisClient.set(REDIS_ROOT_NAME, JSON.stringify(updatedArr), (seterr) => {
         if (seterr) {
           throw new Error('Something went wrong');
         }
 
         logger.info('Data is removed from Redis store');
-        res.send(obj);
+        res.send(updatedArr);
       });
     });
   });

@@ -31,7 +31,7 @@ const ScrapperHomePage = ({
   // show toast message if any errror occurrs
   useEffect(() => {
     if (errors) {
-      toast(errors);
+      toast.error(errors);
     }
   }, [errors]);
 
@@ -91,14 +91,14 @@ const ScrapperHomePage = ({
                 ...links[index]
               };
 
-              return <Row {...rowProps} onClick={onBookmarkLink} />;
+              return <Row key={`row-${index.toString()}`} {...rowProps} onClick={onBookmarkLink} />;
             }}
           />) : null
         }
       </div>
       <h2>{translate('scrapper.lastFewLinkTitle')}</h2>
       <div className="saved-links-container">
-        {topLinks.map(({ href, text }, index) => {
+        {topLinks.map(({ href, text, id }, index) => {
           const rowProps = {
             href,
             text,
@@ -106,7 +106,7 @@ const ScrapperHomePage = ({
             index,
             className: 'virtual-row'
           };
-          return <Row {...rowProps} />;
+          return <Row key={`topRow-${id}`} {...rowProps} />;
         })}
         {topLinks.length === 0
           ? <Message description={translate('scrapper.noSavedLink')} />
