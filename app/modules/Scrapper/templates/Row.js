@@ -1,25 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Row = ({ text, href, isSaved, index, style, className, onClick }) => {
-  const onClickRow = (...props) => {
-    if (onClick) {
-      onClick(...props);
-    }
-  };
-
-  return (
-    <div style={style} className={className}>
-      <div>{text}</div>
-      <div>{href}</div>
-      <button type="button" className="bookmark" onClick={() => onClickRow(index, isSaved)}>
+const Row = ({ text, href, isSaved, index, style, className, onClick }) => (
+  <div style={style} className={className}>
+    <div>{text}</div>
+    <div>{href}</div>
+    {onClick ? (
+      <button type="button" className="bookmark" onClick={() => onClick(index, isSaved)}>
         <span className="material-icons">
           {isSaved ? 'bookmark' : 'bookmark_border'}
         </span>
       </button>
-    </div>
-  );
-};
+    ) : null}
+  </div>
+);
 
 Row.defaultProps = {
   style: {},

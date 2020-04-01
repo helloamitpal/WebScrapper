@@ -23,15 +23,32 @@
     }
   }
 
-  h2 {
-    font-size: 1.3em;
-    font-weight: bold;
+  .saved-links-title {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+    align-items: center;
+
+    h2 {
+      font-size: 1.3em;
+      font-weight: bold;
+      margin: 0;
+    }
+
+    button {
+      height: 28px;
+      border-radius: 4px;
+      border: 1px solid $showall-btn-border-color;
+      cursor: pointer;
+    }
   }
 
   .virtual-row {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    position: relative;
+    height: 60px;
 
     &.selected {
       background-color: $selected-background;

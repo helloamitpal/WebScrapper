@@ -2,5 +2,8 @@
   "noSavedLink": "No saved links found",
   "lastFewLinkTitle": "A few saved links",
   "listTitle": "Saved Links",
-  "rowCountTitle": "${COUNT} links have been saved so far"
+  "rowCountTitle": "${COUNT} links have been saved so far",
+  "saveSuccess": "Link is saved successfully",
+  "removeSuccess": "Link is successfully removed from the list",
+  "alreadySavedLink": "This is already saved"
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Helmet } from 'react-helmet';
@@ -17,16 +17,24 @@ import config from '../../../../config';
 import '../../Scrapper.scss';
 
 const ScrapperHomePage = ({
-  scrapperState: { links, errors, loading, topLinks },
+  scrapperState: { links, errors, loading, topLinks, savedLinks, saveLinkSuccess },
   scrapperActions,
   history
 }) => {
-  const [bookmarkList, setBookmarkList] = useState([]);
+  useEffect(() => {
+    scrapperActions.fetchSavedLinks();
+  }, [scrapperActions]);
 
   // make api call at the begining to fetch a couple of saved links
   useEffect(() => {
     scrapperActions.fetchTopSavedLinks(config.MAX_LINK_SHOW_COUNT);
-  }, [scrapperActions]);
+  }, [scrapperActions, savedLinks.length]);
+
+  useEffect(() => {
+    if (saveLinkSuccess) {
+      toast.success(translate('scrapper.saveSuccess'));
+    }
+  }, [saveLinkSuccess]);
 
   // show toast message if any errror occurrs
   useEffect(() => {
@@ -37,20 +45,15 @@ const ScrapperHomePage = ({
 
   const onChangeSearch = (url) => {
     scrapperActions.fetchLinks(url);
-    setBookmarkList([]);
   };
 
   const onBookmarkLink = (index, saved) => {
-    let list;
     if (saved) {
-      // removing item from saved list
-      list = bookmarkList.filter((val) => (val !== index));
-    } else {
-      // adding item to the saved list
-      list = [...bookmarkList, index];
+      toast.info(translate('scrapper.alreadySavedLink'));
+      return;
     }
-    setBookmarkList(list);
-    scrapperActions.saveLink(links[index]);
+    const obj = links[index];
+    scrapperActions.saveLink(obj);
   };
 
   const showAllSavedLinks = () => {
@@ -82,13 +85,16 @@ const ScrapperHomePage = ({
             itemCount={links.length}
             itemSize={60}
             renderItem={({ index, style }) => {
-              const isSaved = bookmarkList.includes(index);
+              const { id: linkId, text, href } = links[index];
+              const isSaved = savedLinks.some(({ id }) => (id === linkId));
               const rowProps = {
                 isSaved,
                 index,
                 style,
+                text,
+                href,
                 className: `virtual-row ${isSaved ? 'selected' : ''}`,
-                ...links[index]
+                id: linkId
               };
 
               return <Row key={`row-${index.toString()}`} {...rowProps} onClick={onBookmarkLink} />;
@@ -96,7 +102,13 @@ const ScrapperHomePage = ({
           />) : null
         }
       </div>
-      <h2>{translate('scrapper.lastFewLinkTitle')}</h2>
+      <div className="saved-links-title">
+        <h2>{translate('scrapper.lastFewLinkTitle')}</h2>
+        {topLinks.length === 0
+          ? <Message description={translate('scrapper.noSavedLink')} />
+          : <button type="button" onClick={showAllSavedLinks}>{translate('common.showAll')}</button>
+        }
+      </div>
       <div className="saved-links-container">
         {topLinks.map(({ href, text, id }, index) => {
           const rowProps = {
@@ -108,14 +120,6 @@ const ScrapperHomePage = ({
           };
           return <Row key={`topRow-${id}`} {...rowProps} />;
         })}
-        {topLinks.length === 0
-          ? <Message description={translate('scrapper.noSavedLink')} />
-          : null
-        }
-        {topLinks.length > config.MAX_LINK_SHOW_COUNT
-          ? <button type="button" onClick={showAllSavedLinks}>{translate('common.showAll')}</button>
-          : null
-        }
       </div>
     </div>
   );

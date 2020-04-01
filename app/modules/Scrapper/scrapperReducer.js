@@ -8,7 +8,9 @@ const initialState = {
   savedLinks: [],
   topLinks: [],
   errors: '',
-  loading: false
+  loading: false,
+  saveLinkSuccess: false,
+  removeLinkSuccess: false
 };
 
 const articleReducer = (state = initialState, action = '') => {
@@ -41,10 +43,12 @@ const articleReducer = (state = initialState, action = '') => {
         start: (prevState) => ({
           ...prevState,
           errors: '',
+          removeLinkSuccess: false,
           loading: true
         }),
         success: (prevState) => ({
           ...prevState,
+          removeLinkSuccess: true,
           savedLinks: payload ? [...payload] : []
         }),
         failure: (prevState) => ({
@@ -68,7 +72,6 @@ const articleReducer = (state = initialState, action = '') => {
     }
 
     case actionTypes.FETCH_SAVED_LINKS:
-    case actionTypes.SAVE_LINK:
       return handle(state, action, {
         start: (prevState) => ({
           ...prevState,
@@ -77,6 +80,29 @@ const articleReducer = (state = initialState, action = '') => {
         }),
         success: (prevState) => ({
           ...prevState,
+          savedLinks: [...payload]
+        }),
+        failure: (prevState) => ({
+          ...prevState,
+          errors: translate('common.failed')
+        }),
+        finish: prevState => ({
+          ...prevState,
+          loading: false
+        })
+      });
+
+    case actionTypes.SAVE_LINK:
+      return handle(state, action, {
+        start: (prevState) => ({
+          ...prevState,
+          errors: '',
+          saveLinkSuccess: false,
+          loading: true
+        }),
+        success: (prevState) => ({
+          ...prevState,
+          saveLinkSuccess: true,
           savedLinks: [...payload]
         }),
         failure: (prevState) => ({

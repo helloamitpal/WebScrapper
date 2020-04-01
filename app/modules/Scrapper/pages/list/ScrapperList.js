@@ -15,13 +15,20 @@ import Row from '../../templates/Row';
 import '../../Scrapper.scss';
 
 const ScrapperListPage = ({
-  scrapperState: { loading, savedLinks, errors },
+  scrapperState: { loading, savedLinks, errors, removeLinkSuccess },
   scrapperActions
 }) => {
   // make api call at the begining to fetch all saved links
   useEffect(() => {
     scrapperActions.fetchSavedLinks();
   }, [scrapperActions]);
+
+  // showing toaser message for successful removal of link
+  useEffect(() => {
+    if (removeLinkSuccess) {
+      toast.success(translate('scrapper.removeSuccess'));
+    }
+  }, [removeLinkSuccess]);
 
   // show toast message if any errror occurrs
   useEffect(() => {
@@ -62,14 +69,14 @@ const ScrapperListPage = ({
               itemSize={60}
               renderItem={({ index, style }) => {
                 const rowProps = {
-                  isSaved: true,
                   index,
                   style,
                   className: 'virtual-row',
+                  isSaved: true,
                   ...savedLinks[index]
                 };
 
-                return <Row key={`row-${index.toString()}`} {...rowProps} onClick={onRemoveBookmark} />;
+                return <Row key={`list-row-${index.toString()}`} {...rowProps} onClick={onRemoveBookmark} />;
               }}
             />
           )
