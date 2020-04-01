@@ -18,7 +18,7 @@ export const fetchSavedLinks = () => (dispatch, getState, { api }) => {
 
 export const saveLink = () => (dispatch, getState, { api }) => {
   dispatch({
-    type: actionTypes.FETCH_SAVED_LINKS,
+    type: actionTypes.SAVE_LINK,
     promise: api.post('/api/saveLink'),
     payload: {}
   });

@@ -42,6 +42,7 @@ const articleReducer = (state = initialState, action = '') => {
       });
 
     case actionTypes.FETCH_SAVED_LINKS:
+    case actionTypes.SAVE_LINK:
       return handle(state, action, {
         start: (prevState) => ({
           ...prevState,
