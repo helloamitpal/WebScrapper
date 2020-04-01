@@ -10,14 +10,13 @@ import VirtualList from 'react-tiny-virtual-list';
 import * as scrapperActionCreator from '../../scrapperActionCreator';
 import LoadingIndicator from '../../../../components/atoms/LoadingIndicator';
 import Message from '../../../../components/atoms/Message';
-import SearchInput from '../../molecules/SearchInput';
 import translate from '../../../../locale';
 import Row from '../../templates/Row';
 
 import '../../Scrapper.scss';
 
 const ScrapperListPage = ({
-  scrapperState: { errors, loading, savedLinks },
+  scrapperState: { loading, savedLinks, errors },
   scrapperActions
 }) => {
   useEffect(() => {
@@ -36,20 +35,15 @@ const ScrapperListPage = ({
     </Helmet>
   );
 
-  const onChangeSearch = () => {
-
-  };
-
-  const onRemoveBookmark = () => {
-
+  const onRemoveBookmark = (index) => {
+    scrapperActions.removeLink(savedLinks[index].id);
   };
 
   return (
     <div className="scrapper-page-container row">
       {head}
       {loading && <LoadingIndicator />}
-      <SearchInput onSearch={onChangeSearch} className="mt-20" />
-      {!loading && errors && <Message type="error" description={errors} />}
+      <div className="sub-title">{translate('scrapper.rowCountTitle', { COUNT: savedLinks.length })}</div>
       <div className="links-list-container">
         {savedLinks.length
           ? (

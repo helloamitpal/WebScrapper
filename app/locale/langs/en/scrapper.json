@@ -1,5 +1,6 @@
 {
   "noSavedLink": "No saved links found",
   "lastFewLinkTitle": "A few saved links",
-  "listTitle": "Saved Links"
+  "listTitle": "Saved Links",
+  "rowCountTitle": "${COUNT} links have been saved so far"
 }

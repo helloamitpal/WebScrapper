@@ -30,3 +30,11 @@ export const fetchTopSavedLinks = (count) => (dispatch, getState, { api }) => {
     payload: { count }
   });
 };
+
+export const removeLink = () => (dispatch, getState, { api }) => {
+  dispatch({
+    type: actionTypes.REMOVE_LINK,
+    promise: api.post('/api/removeLink'),
+    payload: {}
+  });
+};

@@ -5,8 +5,6 @@ import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 import VirtualList from 'react-tiny-virtual-list';
 
-// import { LazyLoadImage } from 'react-lazy-load-image-component';
-
 import * as scrapperActionCreator from '../../scrapperActionCreator';
 import LoadingIndicator from '../../../../components/atoms/LoadingIndicator';
 import Message from '../../../../components/atoms/Message';
@@ -67,7 +65,6 @@ const ScrapperHomePage = ({
       {head}
       {loading && <LoadingIndicator />}
       <SearchInput onSearch={onChangeSearch} className="mt-20" />
-      {!loading && errors && <Message type="error" description={errors} />}
       <div className="links-list-container">
         {links.length ? (
           <VirtualList

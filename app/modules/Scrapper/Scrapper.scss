@@ -5,6 +5,11 @@
   flex-direction: column;
   height: 100%;
 
+  .sub-title {
+    font-style: italic;
+    font-size: 1em;
+  }
+
   .bookmark {
     position: absolute;
     right: 0;

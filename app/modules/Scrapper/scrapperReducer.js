@@ -11,15 +11,6 @@ const initialState = {
   loading: false
 };
 
-// common failure function for all APIs
-const failureMessage = (prevState, payload) => ({
-  ...prevState,
-  errors:
-    payload && payload.message === 'Network Error'
-      ? translate('common.networkTryAgain')
-      : translate('common.tryAgainSometime')
-});
-
 const articleReducer = (state = initialState, action = '') => {
   const { type, payload } = action;
 
@@ -35,7 +26,31 @@ const articleReducer = (state = initialState, action = '') => {
           ...prevState,
           links: payload ? [...payload] : []
         }),
-        failure: (prevState) => failureMessage(prevState, payload),
+        failure: (prevState) => ({
+          ...prevState,
+          errors: translate('common.tryAgainSometime')
+        }),
+        finish: (prevState) => ({
+          ...prevState,
+          loading: false
+        })
+      });
+
+    case actionTypes.REMOVE_LINK:
+      return handle(state, action, {
+        start: (prevState) => ({
+          ...prevState,
+          errors: '',
+          loading: true
+        }),
+        success: (prevState) => ({
+          ...prevState,
+          savedLinks: payload ? [...payload] : []
+        }),
+        failure: (prevState) => ({
+          ...prevState,
+          errors: translate('common.failed')
+        }),
         finish: (prevState) => ({
           ...prevState,
           loading: false
@@ -66,7 +81,7 @@ const articleReducer = (state = initialState, action = '') => {
         }),
         failure: (prevState) => ({
           ...prevState,
-          savedLinks: []
+          errors: translate('common.failed')
         }),
         finish: prevState => ({
           ...prevState,
