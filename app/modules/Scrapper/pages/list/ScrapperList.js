@@ -4,8 +4,7 @@ import { bindActionCreators } from 'redux';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 import VirtualList from 'react-tiny-virtual-list';
-
-// import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { toast } from 'react-toastify';
 
 import * as scrapperActionCreator from '../../scrapperActionCreator';
 import LoadingIndicator from '../../../../components/atoms/LoadingIndicator';
@@ -19,9 +18,17 @@ const ScrapperListPage = ({
   scrapperState: { loading, savedLinks, errors },
   scrapperActions
 }) => {
+  // make api call at the begining to fetch all saved links
   useEffect(() => {
     scrapperActions.fetchSavedLinks();
   }, [scrapperActions]);
+
+  // show toast message if any errror occurrs
+  useEffect(() => {
+    if (errors) {
+      toast(errors);
+    }
+  }, [errors]);
 
   const head = (
     <Helmet key="scrapper-page">

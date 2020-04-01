@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 import VirtualList from 'react-tiny-virtual-list';
+import { toast } from 'react-toastify';
 
 import * as scrapperActionCreator from '../../scrapperActionCreator';
 import LoadingIndicator from '../../../../components/atoms/LoadingIndicator';
@@ -22,9 +23,17 @@ const ScrapperHomePage = ({
 }) => {
   const [bookmarkList, setBookmarkList] = useState([]);
 
+  // make api call at the begining to fetch a couple of saved links
   useEffect(() => {
     scrapperActions.fetchTopSavedLinks(config.MAX_LINK_SHOW_COUNT);
   }, [scrapperActions]);
+
+  // show toast message if any errror occurrs
+  useEffect(() => {
+    if (errors) {
+      toast(errors);
+    }
+  }, [errors]);
 
   const onChangeSearch = (url) => {
     scrapperActions.fetchLinks(url);
