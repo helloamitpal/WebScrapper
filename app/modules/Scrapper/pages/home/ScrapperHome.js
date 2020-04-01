@@ -18,14 +18,14 @@ import config from '../../../../config';
 import '../../Scrapper.scss';
 
 const ScrapperHomePage = ({
-  scrapperState: { links, errors, loading, savedLinks },
+  scrapperState: { links, errors, loading, topLinks },
   scrapperActions,
   history
 }) => {
   const [bookmarkList, setBookmarkList] = useState([]);
 
   useEffect(() => {
-    scrapperActions.fetchSavedLinks();
+    scrapperActions.fetchTopSavedLinks(config.MAX_LINK_SHOW_COUNT);
   }, [scrapperActions]);
 
   const onChangeSearch = (url) => {
@@ -92,7 +92,7 @@ const ScrapperHomePage = ({
       </div>
       <h2>{translate('scrapper.lastFewLinkTitle')}</h2>
       <div className="saved-links-container">
-        {savedLinks.map(({ href, text }, index) => {
+        {topLinks.map(({ href, text }, index) => {
           const rowProps = {
             href,
             text,
@@ -102,11 +102,11 @@ const ScrapperHomePage = ({
           };
           return <Row {...rowProps} />;
         })}
-        {savedLinks.length === 0
+        {topLinks.length === 0
           ? <Message description={translate('scrapper.noSavedLink')} />
           : null
         }
-        {savedLinks.length > config.MAX_LINK_SHOW_COUNT
+        {topLinks.length > config.MAX_LINK_SHOW_COUNT
           ? <button type="button" onClick={showAllSavedLinks}>{translate('common.showAll')}</button>
           : null
         }

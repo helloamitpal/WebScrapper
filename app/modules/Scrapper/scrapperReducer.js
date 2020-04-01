@@ -6,6 +6,7 @@ import translate from '../../locale';
 const initialState = {
   links: [],
   savedLinks: [],
+  topLinks: [],
   errors: '',
   loading: false
 };
@@ -40,6 +41,16 @@ const articleReducer = (state = initialState, action = '') => {
           loading: false
         })
       });
+
+    case actionTypes.FETCH_TOP_SAVED_LINKS: {
+      const newState = { ...state };
+      const arr = [...newState.savedLinks];
+      const { count } = payload;
+
+      newState.topLinks = arr.length ? arr.slice(Math.max(arr.length - count, 0)) : [];
+
+      return newState;
+    }
 
     case actionTypes.FETCH_SAVED_LINKS:
     case actionTypes.SAVE_LINK:

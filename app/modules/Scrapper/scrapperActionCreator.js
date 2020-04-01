@@ -23,3 +23,10 @@ export const saveLink = () => (dispatch, getState, { api }) => {
     payload: {}
   });
 };
+
+export const fetchTopSavedLinks = (count) => (dispatch, getState, { api }) => {
+  dispatch({
+    type: actionTypes.FETCH_TOP_SAVED_LINKS,
+    payload: { count }
+  });
+};
