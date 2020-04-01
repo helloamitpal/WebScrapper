@@ -12,6 +12,7 @@ Icon set: [Material icon](https://material.io/resources/icons/?icon=search&style
 
 - **React**: The primary UI library
 - **Redux**: Redux data flow
+- **Redis**: Redis in-memory data store
 - **React-redux**: Integrating React with Redux data flow
 - **Redux-thunk**: Redux middleware to support asynchronous operations
 - **Redux-persist**: Persist and rehydrate a redux store.
@@ -32,7 +33,6 @@ Icon set: [Material icon](https://material.io/resources/icons/?icon=search&style
 - Centralised HTTP(S) request and response interceptor
 - Progressive web app (PWA)
 - Webpack based module bundler
-- Production and development ready boilerplate code
 - Internationalization or localization support with English and German language
 - Used React context to implement Internationalization
 - Offline support with service worker
@@ -49,7 +49,6 @@ Icon set: [Material icon](https://material.io/resources/icons/?icon=search&style
 - Centralised color variables
 - Test case setup with Jest
 - Redux extension for better local debugging
-- Proxy setup to counter CORS issues if any
 - Editor config for maintaining the similar coding indentation even if various editors are used across the team
 
 ## Quick start: How to run this template
@@ -63,11 +62,20 @@ $ cd [YOUR APP NAME]
 $ npm install
 ```
 
-To run on local
+Then install Redis in local if not installed
+
+```sh
+$ sudo brew install redis
+$ sudo brew services start redis (It should display: Successfully started redis)
+$ redis-server (Command to check whether redis server is running or not)
+```
+
+Then run local
 
 ```sh
 $ npm run start
 ```
+
 Default port number is 7009
 
 **NOTE**: To change the port, create a .env in root folder and add your port number as follows.

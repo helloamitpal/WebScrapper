@@ -50,7 +50,7 @@ const ScrapperHomePage = ({
       list = [...bookmarkList, index];
     }
     setBookmarkList(list);
-    scrapperActions.saveLink();
+    scrapperActions.saveLink(links[index]);
   };
 
   const showAllSavedLinks = () => {

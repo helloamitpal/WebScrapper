@@ -43,7 +43,8 @@ const ScrapperListPage = ({
   );
 
   const onRemoveBookmark = (index) => {
-    scrapperActions.removeLink(savedLinks[index].id);
+    const { id } = savedLinks[index];
+    scrapperActions.removeLink(id);
   };
 
   return (

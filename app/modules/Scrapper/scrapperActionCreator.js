@@ -16,10 +16,10 @@ export const fetchSavedLinks = () => (dispatch, getState, { api }) => {
   });
 };
 
-export const saveLink = () => (dispatch, getState, { api }) => {
+export const saveLink = (linkObj) => (dispatch, getState, { api }) => {
   dispatch({
     type: actionTypes.SAVE_LINK,
-    promise: api.post('/api/saveLink'),
+    promise: api.post('/api/saveLink', linkObj),
     payload: {}
   });
 };
@@ -31,10 +31,10 @@ export const fetchTopSavedLinks = (count) => (dispatch, getState, { api }) => {
   });
 };
 
-export const removeLink = () => (dispatch, getState, { api }) => {
+export const removeLink = (id) => (dispatch, getState, { api }) => {
   dispatch({
     type: actionTypes.REMOVE_LINK,
-    promise: api.post('/api/removeLink'),
+    promise: api.delete(`/api/removeLink?id=${id}`),
     payload: {}
   });
 };

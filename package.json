@@ -77,11 +77,13 @@
     "react-router-dom": "^5.1.2",
     "react-tiny-virtual-list": "^2.2.0",
     "react-toastify": "^5.5.0",
+    "redis": "^3.0.2",
     "redux": "3.7.2",
     "redux-pack": "^0.1.5",
     "redux-persist": "5.10.0",
     "redux-thunk": "^2.3.0",
-    "request": "^2.88.2"
+    "request": "^2.88.2",
+    "uuid": "^7.0.3"
   },
   "devDependencies": {
     "@babel/cli": "7.1.2",

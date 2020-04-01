@@ -1,28 +1,71 @@
 /* eslint-disable no-bitwise, no-mixed-operators */
 const request = require('request');
 const cheerio = require('cheerio');
+const redis = require('redis');
+const uuid = require('uuid');
 
-// Public Domain/MIT
-const generateUUID = () => {
-  let timestamp = new Date().getTime(); // Timestamp
-  let timestamp2 = (performance && performance.now && (performance.now() * 1000)) || 0; // Time in microseconds since page-load or 0 if unsupported
+const logger = require('./util//logger');
 
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (val) => {
-    let random = Math.random() * 16; // random number between 0 and 16
-    if (timestamp > 0) {
-      // Use timestamp until depleted
-      random = (timestamp + random) % 16 | 0;
-      timestamp = Math.floor(timestamp / 16);
-    } else {
-      // Use microseconds since page-load if supported
-      random = (timestamp2 + random) % 16 | 0;
-      timestamp2 = Math.floor(timestamp2 / 16);
-    }
-    return (val === 'x' ? random : (random & 0x3 | 0x8)).toString(16);
-  });
-};
+const REDIS_ROOT_NAME = 'SCRAPPE_RROOT';
+const redisClient = redis.createClient(); // creates a new redis client
 
 module.exports = (app) => {
+  redisClient.on('connect', () => {
+    logger.info('Redis connected');
+  });
+
+  // api to get all saved links in the store
+  app.get('/api/savedLinks', (req, res) => {
+    redisClient.hmget(REDIS_ROOT_NAME, (err, arr) => {
+      if (err) {
+        throw new Error('Something went wrong');
+      }
+
+      logger.info(`Data is found in Redis store: ${arr ? arr.length : 0}`);
+      res.send(arr || []);
+    });
+  });
+
+  // api to save link in the store
+  app.post('/api/saveLink', (req, res) => {
+    redisClient.hmget(REDIS_ROOT_NAME, (err, arr) => {
+      if (err) {
+        throw new Error('Something went wrong');
+      }
+
+      const updatedArr = arr ? [...arr] : [];
+      updatedArr.push(req.body);
+      redisClient.hmset(REDIS_ROOT_NAME, updatedArr, (seterr, obj) => {
+        if (seterr) {
+          throw new Error('Something went wrong');
+        }
+
+        logger.info('Data is saved in Redis store');
+        res.send(obj);
+      });
+    });
+  });
+
+  // api to remove link from saved store
+  app.delete('/api/removeLink', (req, res) => {
+    redisClient.hmget(REDIS_ROOT_NAME, (err, arr) => {
+      if (err) {
+        throw new Error('Something went wrong');
+      }
+
+      const updatedArr = arr.filter(({ id }) => (id !== req.query.id));
+      redisClient.hmset(REDIS_ROOT_NAME, updatedArr, (seterr, obj) => {
+        if (seterr) {
+          throw new Error('Something went wrong');
+        }
+
+        logger.info('Data is removed from Redis store');
+        res.send(obj);
+      });
+    });
+  });
+
+  // api to get all links form a given url
   app.get('/api/scrappers', (req, res) => {
     const { url } = req.query;
 
@@ -39,7 +82,7 @@ module.exports = (app) => {
       const $ = cheerio.load(html);
       $('a').each(function callback() {
         const $link = $(this);
-        const id = generateUUID();
+        const id = uuid.v4();
 
         links.push({
           text: $link.text(),
