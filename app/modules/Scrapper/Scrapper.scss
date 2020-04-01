@@ -1,5 +1,45 @@
+@import './colors.scss';
+
 .scrapper-page-container {
-  .links-list-container {
-    overflow: auto;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .bookmark {
+    position: absolute;
+    right: 0;
+    border: 0 none;
+    background: transparent;
+    cursor: pointer;
+
+    &:hover .material-icons {
+      color: $bookmark-btn-hover-color;
+    }
+  }
+
+  h2 {
+    font-size: 1.3em;
+    font-weight: bold;
+  }
+
+  .virtual-row {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    &.selected {
+      background-color: $selected-background;
+    }
+
+    &:not(:last-child) {
+      border-bottom: 1px solid $row-border;
+    }
+
+    & > div {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      padding: 0 20px;
+    }
   }
 }

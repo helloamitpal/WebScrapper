@@ -1,6 +1,10 @@
 @import './colors.scss';
 
 .input-container {
+  input {
+    padding: 0 20px;
+  }
+
   &.error input {
     background-color: $input-error-background;
   }
