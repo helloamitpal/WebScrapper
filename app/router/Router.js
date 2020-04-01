@@ -4,7 +4,8 @@ import { Switch, Route, withRouter } from 'react-router-dom';
 
 import config from '../config';
 import NotFoundModule from '../modules/NotFound/Loadable';
-import ScrapperModule from '../modules/Scrapper/Loadable';
+import ScrapperModule from '../modules/Scrapper/pages/home/Loadable';
+import ScrapperListModule from '../modules/Scrapper/pages/list/Loadable';
 import Header from '../components/molecules/Header';
 import Footer from '../components/molecules/Footer';
 import LocaleContext from '../locale/localeContext';
@@ -34,6 +35,11 @@ const Router = () => {
               exact
               path={config.SCRAPPER_PAGE}
               render={(props) => <ScrapperModule {...props} />}
+            />
+            <Route
+              exact
+              path={config.SCRAPPER_SAVED_LINKS_PAGE}
+              render={(props) => <ScrapperListModule {...props} />}
             />
             <Route path="" render={(props) => <NotFoundModule {...props} />} />
           </Switch>

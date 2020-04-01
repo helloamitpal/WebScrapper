@@ -11,14 +11,15 @@ const Message = ({ title, description, type }) => (
 );
 
 Message.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   description: PropTypes.string,
   type: PropTypes.oneOf(['success', 'error', 'warning', 'default'])
 };
 
 Message.defaultProps = {
   description: '',
-  type: 'default'
+  type: 'default',
+  title: ''
 };
 
 export default memo(Message);

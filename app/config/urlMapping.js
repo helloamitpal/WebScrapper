@@ -1,4 +1,4 @@
 export default {
   SCRAPPER_PAGE: '/',
-  SCRAPPER_DETAILS_PAGE: '/details'
+  SCRAPPER_SAVED_LINKS_PAGE: '/saved-links'
 };

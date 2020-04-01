@@ -10,5 +10,6 @@
   "tryAgainSometime": "Something went wrong. Either please check your input or try again after some time.",
   "pageNotFound": "Page Not Found!!!",
   "tryAgain": "Please try again!",
-  "URL": "http(s)://www.website.com"
+  "URL": "http(s)://www.website.com",
+  "showAll": "Show All"
 }

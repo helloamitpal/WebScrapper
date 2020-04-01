@@ -7,24 +7,26 @@ import VirtualList from 'react-tiny-virtual-list';
 
 // import { LazyLoadImage } from 'react-lazy-load-image-component';
 
-import * as scrapperActionCreator from './scrapperActionCreator';
-import LoadingIndicator from '../../components/atoms/LoadingIndicator';
-import Message from '../../components/atoms/Message';
-import SearchInput from './molecules/SearchInput';
-import translate from '../../locale';
-import Row from './templates/Row';
+import * as scrapperActionCreator from '../../scrapperActionCreator';
+import LoadingIndicator from '../../../../components/atoms/LoadingIndicator';
+import Message from '../../../../components/atoms/Message';
+import SearchInput from '../../molecules/SearchInput';
+import translate from '../../../../locale';
+import Row from '../../templates/Row';
+import config from '../../../../config';
 
-import './Scrapper.scss';
+import '../../Scrapper.scss';
 
-const ScrapperPage = ({
+const ScrapperHomePage = ({
   scrapperState: { links, errors, loading, savedLinks },
-  scrapperActions
+  scrapperActions,
+  history
 }) => {
   const [bookmarkList, setBookmarkList] = useState([]);
 
   useEffect(() => {
     scrapperActions.fetchSavedLinks();
-  }, []);
+  }, [scrapperActions]);
 
   const onChangeSearch = (url) => {
     scrapperActions.fetchLinks(url);
@@ -44,10 +46,14 @@ const ScrapperPage = ({
     scrapperActions.saveLink();
   };
 
+  const showAllSavedLinks = () => {
+    history.push(config.SCRAPPER_SAVED_LINKS_PAGE);
+  };
+
   const head = (
     <Helmet key="scrapper-page">
       <title>{translate('common.appName')}</title>
-      <meta property="og:title" content="Scrapper link list" />
+      <meta property="og:title" content="Scrapper home page" />
       <meta
         name="description"
         content="Get list of all hyperlinks available in a web page from a given URL"
@@ -96,7 +102,14 @@ const ScrapperPage = ({
           };
           return <Row {...rowProps} />;
         })}
-        {savedLinks.length === 0 ? <Message description={translate('scrapper.noSavedLink')} /> : null}
+        {savedLinks.length === 0
+          ? <Message description={translate('scrapper.noSavedLink')} />
+          : null
+        }
+        {savedLinks.length > config.MAX_LINK_SHOW_COUNT
+          ? <button type="button" onClick={showAllSavedLinks}>{translate('common.showAll')}</button>
+          : null
+        }
       </div>
     </div>
   );
@@ -110,14 +123,16 @@ const mapDispatchToProps = (dispatch) => ({
   scrapperActions: bindActionCreators(scrapperActionCreator, dispatch)
 });
 
-ScrapperPage.propTypes = {
+ScrapperHomePage.propTypes = {
   scrapperState: PropTypes.object,
-  scrapperActions: PropTypes.object
+  scrapperActions: PropTypes.object,
+  history: PropTypes.object
 };
 
-ScrapperPage.defaultProps = {
+ScrapperHomePage.defaultProps = {
   scrapperState: {},
-  scrapperActions: {}
+  scrapperActions: {},
+  history: {}
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ScrapperPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ScrapperHomePage);

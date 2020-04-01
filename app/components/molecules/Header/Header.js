@@ -48,6 +48,11 @@ const Header = ({ onChangeLocale }) => {
                   {translate('common.home')}
                 </Link>
               </li>
+              <li>
+                <Link to={config.SCRAPPER_SAVED_LINKS_PAGE} className="item" onClick={toggleMenu}>
+                  {translate('scrapper.listTitle')}
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
