@@ -12,17 +12,18 @@ import LoadingIndicator from '../../components/atoms/LoadingIndicator';
 import Message from '../../components/atoms/Message';
 import SearchInput from './molecules/SearchInput';
 import translate from '../../locale';
+import Row from './templates/Row';
 
 import './Scrapper.scss';
 
 const ScrapperPage = ({
-  scrapperState: { links, errors, loading },
+  scrapperState: { links, errors, loading, savedLinks },
   scrapperActions
 }) => {
   const [bookmarkList, setBookmarkList] = useState([]);
 
   useEffect(() => {
-
+    scrapperActions.fetchSavedLinks();
   }, []);
 
   const onChangeSearch = (url) => {
@@ -40,6 +41,7 @@ const ScrapperPage = ({
       list = [...bookmarkList, index];
     }
     setBookmarkList(list);
+    scrapperActions.saveLink();
   };
 
   const head = (
@@ -61,32 +63,40 @@ const ScrapperPage = ({
       <SearchInput onSearch={onChangeSearch} className="mt-20" />
       {!loading && errors && <Message type="error" description={errors} />}
       <div className="links-list-container">
-        <VirtualList
-          height={400}
-          width="100%"
-          itemCount={links.length}
-          itemSize={60}
-          renderItem={({ index, style }) => {
-            const { text, href } = links[index];
-            const isSaved = bookmarkList.includes(index);
+        {links.length ? (
+          <VirtualList
+            height={400}
+            width="100%"
+            itemCount={links.length}
+            itemSize={60}
+            renderItem={({ index, style }) => {
+              const isSaved = bookmarkList.includes(index);
+              const rowProps = {
+                isSaved,
+                index,
+                style,
+                className: `virtual-row ${isSaved ? 'selected' : ''}`,
+                ...links[index]
+              };
 
-            return (
-              <div key={index} style={style} className={`virtual-row ${isSaved ? 'selected' : ''}`}>
-                <div>{text}</div>
-                <div>{href}</div>
-                <button type="button" className="bookmark" onClick={() => onBookmarkLink(index, isSaved)}>
-                  <span className="material-icons">
-                    {isSaved ? 'bookmark' : 'bookmark_border'}
-                  </span>
-                </button>
-              </div>
-            );
-          }}
-        />
+              return <Row {...rowProps} onClick={onBookmarkLink} />;
+            }}
+          />) : null
+        }
       </div>
-      <h2>Last 5 saved links</h2>
+      <h2>{translate('scrapper.lastFewLinkTitle')}</h2>
       <div className="saved-links-container">
-
+        {savedLinks.map(({ href, text }, index) => {
+          const rowProps = {
+            href,
+            text,
+            isSaved: true,
+            index,
+            className: 'virtual-row'
+          };
+          return <Row {...rowProps} />;
+        })}
+        {savedLinks.length === 0 ? <Message description={translate('scrapper.noSavedLink')} /> : null}
       </div>
     </div>
   );

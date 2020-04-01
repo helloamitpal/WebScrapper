@@ -5,6 +5,7 @@ import translate from '../../locale';
 
 const initialState = {
   links: [],
+  savedLinks: [],
   errors: '',
   loading: false
 };
@@ -24,18 +25,37 @@ const articleReducer = (state = initialState, action = '') => {
   switch (type) {
     case actionTypes.FETCH_LINKS:
       return handle(state, action, {
-        start: prevState => ({
+        start: (prevState) => ({
           ...prevState,
           errors: '',
           loading: true
         }),
-        success: prevState => {
-          return {
-            ...prevState,
-            links: payload ? [...payload] : []
-          };
-        },
-        failure: prevState => failureMessage(prevState, payload),
+        success: (prevState) => ({
+          ...prevState,
+          links: payload ? [...payload] : []
+        }),
+        failure: (prevState) => failureMessage(prevState, payload),
+        finish: (prevState) => ({
+          ...prevState,
+          loading: false
+        })
+      });
+
+    case actionTypes.FETCH_SAVED_LINKS:
+      return handle(state, action, {
+        start: (prevState) => ({
+          ...prevState,
+          errors: '',
+          loading: true
+        }),
+        success: (prevState) => ({
+          ...prevState,
+          savedLinks: [...payload]
+        }),
+        failure: (prevState) => ({
+          ...prevState,
+          savedLinks: []
+        }),
         finish: prevState => ({
           ...prevState,
           loading: false
