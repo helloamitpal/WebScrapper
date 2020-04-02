@@ -63,7 +63,6 @@
     "express": "4.16.3",
     "glob": "^7.1.6",
     "helmet": "^3.19.0",
-    "http-proxy-middleware": "^0.20.0",
     "ip": "1.1.5",
     "js-cookie": "^2.2.1",
     "lodash": "^4.17.11",
