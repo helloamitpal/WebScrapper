@@ -28,6 +28,12 @@ module.exports = (app) => {
 
   // api to save link in the store
   app.post('/api/saveLink', (req, res) => {
+    const { body } = req;
+
+    if (!body) {
+      throw new Error('Invalid body');
+    }
+
     redisClient.get(REDIS_ROOT_NAME, (err, redisStr) => {
       if (err) {
         throw new Error('Something went wrong');
@@ -36,9 +42,9 @@ module.exports = (app) => {
       const redisObj = JSON.parse(redisStr);
       let arr = {};
       if (!redisObj) {
-        arr = [{ ...req.body }];
+        arr = [{ ...body }];
       } else {
-        arr = [...redisObj, req.body];
+        arr = [...redisObj, body];
       }
 
       redisClient.set(REDIS_ROOT_NAME, JSON.stringify(arr), (seterr) => {
@@ -54,13 +60,19 @@ module.exports = (app) => {
 
   // api to remove link from saved store
   app.delete('/api/removeLink', (req, res) => {
+    const { id: queryParamId } = req.query;
+
+    if (!queryParamId) {
+      throw new Error('Invalid param');
+    }
+
     redisClient.get(REDIS_ROOT_NAME, (err, redisStr) => {
       if (err) {
         throw new Error('Something went wrong');
       }
 
       const links = JSON.parse(redisStr);
-      const updatedArr = links.filter(({ id }) => (id !== req.query.id));
+      const updatedArr = links.filter(({ id }) => (id !== queryParamId));
 
       redisClient.set(REDIS_ROOT_NAME, JSON.stringify(updatedArr), (seterr) => {
         if (seterr) {
@@ -70,6 +82,22 @@ module.exports = (app) => {
         logger.info('Data is removed from Redis store');
         res.send(updatedArr);
       });
+    });
+  });
+
+  app.get('/api/preview', (req, res) => {
+    const { url } = req.query;
+
+    if (!url) {
+      throw new Error('Invalid param');
+    }
+
+    request(url, (error, response, html) => {
+      if (error) {
+        throw new Error('Problem in fetching the URL');
+      }
+
+      res.send(html);
     });
   });
 

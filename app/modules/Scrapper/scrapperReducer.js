@@ -10,7 +10,8 @@ const initialState = {
   errors: '',
   loading: false,
   saveLinkSuccess: false,
-  removeLinkSuccess: false
+  removeLinkSuccess: false,
+  previewContent: ''
 };
 
 const articleReducer = (state = initialState, action = '') => {

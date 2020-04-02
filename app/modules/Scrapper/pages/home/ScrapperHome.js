@@ -93,9 +93,7 @@ const ScrapperHomePage = ({
       {head}
       {loading && <LoadingIndicator />}
       {modalOpen && previewContent && (
-        <Modal onClose={() => setModalOpen(false)}>
-          {previewContent}
-        </Modal>
+        <Modal onClose={() => setModalOpen(false)} content={previewContent} />
       )}
       <SearchInput onSearch={onChangeSearch} className="mt-20" />
       <div className="links-list-container">

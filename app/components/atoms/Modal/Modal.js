@@ -1,21 +1,22 @@
+/* eslint-disable react/no-danger */
 import React from 'react';
 import PropTypes from 'prop-types';
 
 import './Modal.scss';
 
-const Modal = ({ onClose, children }) => (
-  <div className="overlay">
+const Modal = ({ onClose, content }) => (
+  <div className="overlay modal-container">
     <div className="modal-content">
-      <button type="button" onClick={onClose}>
+      <button type="button" className="close-btn" onClick={onClose}>
         <span className="material-icons">close</span>
       </button>
-      {children}
+      <div className="modal-body" dangerouslySetInnerHTML={{ __html: content }} />
     </div>
   </div>
 );
 
 Modal.propTypes = {
-  children: PropTypes.node.isRequired,
+  content: PropTypes.node.isRequired,
   onClose: PropTypes.func.isRequired
 };
 

@@ -73,9 +73,7 @@ const ScrapperListPage = ({
       {head}
       {loading && <LoadingIndicator />}
       {modalOpen && previewContent && (
-        <Modal onClose={() => setModalOpen(false)}>
-          {previewContent}
-        </Modal>
+        <Modal onClose={() => setModalOpen(false)} content={previewContent} />
       )}
       <div className="sub-title">{translate('scrapper.rowCountTitle', { COUNT: savedLinks.length })}</div>
       <div className="links-list-container">
