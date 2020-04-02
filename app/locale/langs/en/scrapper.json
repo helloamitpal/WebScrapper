@@ -5,5 +5,7 @@
   "rowCountTitle": "${COUNT} links have been saved so far",
   "saveSuccess": "Link is saved successfully",
   "removeSuccess": "Link is successfully removed from the list",
-  "alreadySavedLink": "This is already saved"
+  "alreadySavedLink": "This is already saved",
+  "noPreviewFound": "No preview found",
+  "errorPreview": "Something went wrong in previewing link. Please try again."
 }

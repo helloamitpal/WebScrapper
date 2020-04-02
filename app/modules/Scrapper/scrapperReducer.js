@@ -38,6 +38,28 @@ const articleReducer = (state = initialState, action = '') => {
         })
       });
 
+    case actionTypes.PREVIEW_LINK:
+      return handle(state, action, {
+        start: (prevState) => ({
+          ...prevState,
+          errors: '',
+          previewContent: '',
+          loading: true
+        }),
+        success: (prevState) => ({
+          ...prevState,
+          previewContent: payload || translate('scrapper.noPreviewFound')
+        }),
+        failure: (prevState) => ({
+          ...prevState,
+          errors: translate('scrapper.errorPreview')
+        }),
+        finish: (prevState) => ({
+          ...prevState,
+          loading: false
+        })
+      });
+
     case actionTypes.REMOVE_LINK:
       return handle(state, action, {
         start: (prevState) => ({

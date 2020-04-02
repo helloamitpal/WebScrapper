@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Helmet } from 'react-helmet';
@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import * as scrapperActionCreator from '../../scrapperActionCreator';
 import LoadingIndicator from '../../../../components/atoms/LoadingIndicator';
 import Message from '../../../../components/atoms/Message';
+import Modal from '../../../../components/atoms/Modal';
 import SearchInput from '../../molecules/SearchInput';
 import translate from '../../../../locale';
 import Row from '../../templates/Row';
@@ -17,10 +18,13 @@ import config from '../../../../config';
 import '../../Scrapper.scss';
 
 const ScrapperHomePage = ({
-  scrapperState: { links, errors, loading, topLinks, savedLinks, saveLinkSuccess },
+  scrapperState: { links, errors, loading, topLinks, savedLinks, saveLinkSuccess, previewContent },
   scrapperActions,
   history
 }) => {
+  const [modalOpen, setModalOpen] = useState(false);
+
+  // calling api to fetch all saved links
   useEffect(() => {
     scrapperActions.fetchSavedLinks();
   }, [scrapperActions]);
@@ -30,11 +34,19 @@ const ScrapperHomePage = ({
     scrapperActions.fetchTopSavedLinks(config.MAX_LINK_SHOW_COUNT);
   }, [scrapperActions, savedLinks.length]);
 
+  // showing success message when save api gets success
   useEffect(() => {
     if (saveLinkSuccess) {
       toast.success(translate('scrapper.saveSuccess'));
     }
   }, [saveLinkSuccess]);
+
+  // opening modal when preview content arrived
+  useEffect(() => {
+    if (previewContent) {
+      setModalOpen(true);
+    }
+  }, [previewContent]);
 
   // show toast message if any errror occurrs
   useEffect(() => {
@@ -60,6 +72,10 @@ const ScrapperHomePage = ({
     history.push(config.SCRAPPER_SAVED_LINKS_PAGE);
   };
 
+  const onPreview = (link) => {
+    scrapperActions.getLinkPreview(link);
+  };
+
   const head = (
     <Helmet key="scrapper-page">
       <title>{translate('common.appName')}</title>
@@ -76,6 +92,11 @@ const ScrapperHomePage = ({
     <div className="scrapper-page-container row">
       {head}
       {loading && <LoadingIndicator />}
+      {modalOpen && previewContent && (
+        <Modal onClose={() => setModalOpen(false)}>
+          {previewContent}
+        </Modal>
+      )}
       <SearchInput onSearch={onChangeSearch} className="mt-20" />
       <div className="links-list-container">
         {links.length ? (
@@ -118,7 +139,7 @@ const ScrapperHomePage = ({
             index,
             className: 'virtual-row'
           };
-          return <Row key={`topRow-${id}`} {...rowProps} />;
+          return <Row key={`topRow-${id}`} onPreview={() => onPreview(href)} {...rowProps} />;
         })}
       </div>
     </div>

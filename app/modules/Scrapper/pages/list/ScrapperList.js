@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Helmet } from 'react-helmet';
@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 
 import * as scrapperActionCreator from '../../scrapperActionCreator';
 import LoadingIndicator from '../../../../components/atoms/LoadingIndicator';
+import Modal from '../../../../components/atoms/Modal';
 import Message from '../../../../components/atoms/Message';
 import translate from '../../../../locale';
 import Row from '../../templates/Row';
@@ -15,9 +16,11 @@ import Row from '../../templates/Row';
 import '../../Scrapper.scss';
 
 const ScrapperListPage = ({
-  scrapperState: { loading, savedLinks, errors, removeLinkSuccess },
+  scrapperState: { loading, savedLinks, errors, removeLinkSuccess, previewContent },
   scrapperActions
 }) => {
+  const [modalOpen, setModalOpen] = useState(false);
+
   // make api call at the begining to fetch all saved links
   useEffect(() => {
     scrapperActions.fetchSavedLinks();
@@ -36,6 +39,17 @@ const ScrapperListPage = ({
       toast.error(errors);
     }
   }, [errors]);
+
+  // opening modal when preview content arrived
+  useEffect(() => {
+    if (previewContent) {
+      setModalOpen(true);
+    }
+  }, [previewContent]);
+
+  const onPreview = (link) => {
+    scrapperActions.getLinkPreview(link);
+  };
 
   const head = (
     <Helmet key="scrapper-page">
@@ -58,6 +72,11 @@ const ScrapperListPage = ({
     <div className="scrapper-page-container row">
       {head}
       {loading && <LoadingIndicator />}
+      {modalOpen && previewContent && (
+        <Modal onClose={() => setModalOpen(false)}>
+          {previewContent}
+        </Modal>
+      )}
       <div className="sub-title">{translate('scrapper.rowCountTitle', { COUNT: savedLinks.length })}</div>
       <div className="links-list-container">
         {savedLinks.length
@@ -68,15 +87,24 @@ const ScrapperListPage = ({
               itemCount={savedLinks.length}
               itemSize={60}
               renderItem={({ index, style }) => {
+                const { href, ...rest } = savedLinks[index];
                 const rowProps = {
                   index,
                   style,
                   className: 'virtual-row',
                   isSaved: true,
-                  ...savedLinks[index]
+                  href,
+                  ...rest
                 };
 
-                return <Row key={`list-row-${index.toString()}`} {...rowProps} onClick={onRemoveBookmark} />;
+                return (
+                  <Row
+                    key={`list-row-${index.toString()}`}
+                    onPreview={() => onPreview(href)}
+                    {...rowProps}
+                    onClick={onRemoveBookmark}
+                  />
+                );
               }}
             />
           )

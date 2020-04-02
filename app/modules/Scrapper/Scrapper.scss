@@ -11,18 +11,6 @@
     margin-top: 10px;
   }
 
-  .bookmark {
-    position: absolute;
-    right: 0;
-    border: 0 none;
-    background: transparent;
-    cursor: pointer;
-
-    &:hover .material-icons {
-      color: $bookmark-btn-hover-color;
-    }
-  }
-
   .saved-links-title {
     display: flex;
     justify-content: space-between;
@@ -45,10 +33,25 @@
 
   .virtual-row {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     position: relative;
     height: 60px;
+
+    .row-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex: 1;
+    }
+
+    button {
+      background: transparent;
+      border: 0 none;
+      cursor: pointer;
+
+      &:hover .material-icons {
+        color: $bookmark-btn-hover-color;
+      }
+    }
 
     &.selected {
       background-color: $selected-background;

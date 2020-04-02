@@ -38,3 +38,11 @@ export const removeLink = (id) => (dispatch, getState, { api }) => {
     payload: {}
   });
 };
+
+export const getLinkPreview = (url) => (dispatch, getState, { api }) => {
+  dispatch({
+    type: actionTypes.PREVIEW_LINK,
+    promise: api.get(`/api/preview?url=${url}`),
+    payload: {}
+  });
+};
