@@ -116,7 +116,14 @@ const ScrapperHomePage = ({
                 id: linkId
               };
 
-              return <Row key={`row-${index.toString()}`} {...rowProps} onClick={onBookmarkLink} />;
+              return (
+                <Row
+                  key={`row-${index.toString()}`}
+                  onPreview={() => onPreview(href)}
+                  {...rowProps}
+                  onClick={onBookmarkLink}
+                />
+              );
             }}
           />) : null
         }

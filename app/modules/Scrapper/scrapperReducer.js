@@ -99,6 +99,7 @@ const articleReducer = (state = initialState, action = '') => {
         start: (prevState) => ({
           ...prevState,
           errors: '',
+          previewContent: '',
           loading: true
         }),
         success: (prevState) => ({
